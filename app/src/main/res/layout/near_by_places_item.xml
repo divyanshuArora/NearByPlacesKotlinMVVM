@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data class="PlacesItemBinding">
+        <variable
+            name="NearByViewModel"
+            type="com.example.nearbyplaceskotlinmvvm.service.model.NearByPlaceModel" />
+    </data>
+
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_list"
+    android:id="@+id/item"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        >
+
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="4.5"
+            android:layout_margin="10dp"
+            >
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{NearByViewModel.name}"
+                    android:textColor="#1E88E5"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:layout_marginLeft="5dp"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{NearByViewModel.vicinity}"
+                    android:textColor="#037065"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:layout_marginLeft="5dp"
+                    />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                android:layout_marginLeft="5dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating: "
+                    android:layout_weight="0.5"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{NearByViewModel.rating+` *`}"
+                    android:layout_weight="4.5"
+                    android:textColor="#F58D08"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:id="@+id/imagePlaces"
+            android:layout_weight="0.3"
+            android:layout_marginLeft="10dp"
+            app:getImageFromUrl="@{NearByViewModel.icon}"
+            android:src="@drawable/ic_launcher_background"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>
+</layout>

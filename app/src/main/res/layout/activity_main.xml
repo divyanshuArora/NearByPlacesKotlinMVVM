@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="MainNearByPlacesRespopnse"
+            type="com.example.nearbyplaceskotlinmvvm.service.response.NearByPlacesRespopnse" />
+
+
+    </data>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/nearByPlacesRecycle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="9"
+      android:background="#EBE7E7"
+
+      />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rectangle"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@drawable/rectangle"
+            android:id="@+id/Restaurent"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:typeface="serif"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Restaurent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/School"
+            android:background="@drawable/rectangle"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:typeface="serif"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="School"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/Hospital"
+            android:background="@drawable/rectangle"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="Hospital"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
+</layout>
