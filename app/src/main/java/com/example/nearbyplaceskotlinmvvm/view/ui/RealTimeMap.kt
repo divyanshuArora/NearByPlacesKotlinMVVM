@@ -158,14 +158,18 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
             var Address: ArrayList<Address>? = null
             geocoder = Geocoder(this, Locale.getDefault())
             try
+           {
+               Address = geocoder!!.getFromLocation(p0.latitude!!, p0.longitude!!, 1) as ArrayList<Address>
+           }
+            catch (e: IOException)
             {
-                Address = geocoder!!.getFromLocation(currentLattitude!!, currentLongitude!!, 1) as ArrayList<Address> } catch (e: IOException)
-            {
-                Log.d("DetailsActivity", "" + e)
+               Log.d("RealTimeMap", "" + e)
             }
 
-            var place = Address!![0].featureName
-            Log.d("DetailsActivity", "" )
+            var place = Address!![0].getAddressLine(0)
+            Log.d("RealTimeMap", "$place" )
+
+
             map!!.clear()
             map!!.addMarker(MarkerOptions().position(location).title(place))
             map!!.moveCamera(CameraUpdateFactory.newLatLng(location))
