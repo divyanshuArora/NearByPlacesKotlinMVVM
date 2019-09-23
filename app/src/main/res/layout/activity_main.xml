@@ -89,6 +89,26 @@
                 android:text="Hospital"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/liveMap"
+            android:background="@drawable/rectangle"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="Live Map"/>
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
 
 

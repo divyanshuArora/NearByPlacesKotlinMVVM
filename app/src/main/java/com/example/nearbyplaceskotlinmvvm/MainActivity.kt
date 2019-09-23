@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nearbyplaceskotlinmvvm.databinding.ActivityMainBinding
 import com.example.nearbyplaceskotlinmvvm.service.model.NearByPlaceModel
 import com.example.nearbyplaceskotlinmvvm.view.adapter.NearByPlacesAdapter
+import com.example.nearbyplaceskotlinmvvm.view.ui.RealTimeMap
 import com.example.nearbyplaceskotlinmvvm.viewmodel.NearByPlacesViewModel
+import org.jetbrains.anko.startActivity
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity(){
@@ -49,6 +51,10 @@ class MainActivity : AppCompatActivity(){
         activityMainBinding!!.Restaurent.setOnClickListener { getPlaces("restaurant") }
 
         activityMainBinding!!.School.setOnClickListener { getPlaces("school") }
+        activityMainBinding!!.liveMap.setOnClickListener {
+
+            startActivity<RealTimeMap>()
+        }
 
 
 
