@@ -92,5 +92,10 @@ dependencies {
     implementation 'com.beust:klaxon:0.30'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
 
+    ////dimension
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+
+    implementation 'com.google.android.material:material:1.0.0'
 
 }

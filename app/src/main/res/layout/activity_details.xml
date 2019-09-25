@@ -14,6 +14,7 @@
 
 
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,10 +55,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/itemDetailsLayout"
             android:orientation="horizontal"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:padding="10dp"
             >
 
@@ -92,7 +94,7 @@
         android:orientation="horizontal"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:padding="10dp"
         >
 
@@ -119,36 +121,6 @@
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Rating: "
-                android:textSize="14sp"
-                android:textColor="#039BE5"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/totalRating"
-                android:text="total rating"
-                android:gravity="right"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="#000000"
-                />
-
-        </LinearLayout>
 
 
         <LinearLayout
@@ -157,7 +129,7 @@
             android:orientation="horizontal"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:padding="10dp"
             >
 
@@ -186,16 +158,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
+            android:weightSum="10"
+            android:orientation="vertical"
             >
             <fragment
                 android:id="@+id/map"
-                android:layout_weight="1"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="9.5"
+                android:layout_height="0dp"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:id="@+id/bottomSheet"
+                android:background="#F30101"
+                android:text="Select Vehicle"
+                android:textColor="#ffffff"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:padding="@dimen/_5sdp"
                 />
 
         </LinearLayout>
+
 
     </LinearLayout>
 </layout>

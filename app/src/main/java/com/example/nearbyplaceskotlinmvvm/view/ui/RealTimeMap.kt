@@ -1,23 +1,23 @@
 package com.example.nearbyplaceskotlinmvvm.view.ui
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.example.nearbyplaceskotlinmvvm.R
 import com.example.nearbyplaceskotlinmvvm.databinding.ActivityRealTimeMapBinding
+import com.example.nearbyplaceskotlinmvvm.service.model.MapData
+import com.example.nearbyplaceskotlinmvvm.view.adapter.CustomWindowAdapter
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
 import java.util.*
@@ -43,6 +44,7 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
     private  var map:  GoogleMap ?= null
     internal var googleApiClient: GoogleApiClient? = null
     var geocoder: Geocoder? = null
+    var marker: Marker ?= null
 
     private var currentLattitude: Double ?= null
     private var currentLongitude: Double ?= null
@@ -92,14 +94,53 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(locationRequest!!)
         val locationSettingsRequest = builder.build()
-
         // initialize location service object
         val settingsClient = LocationServices.getSettingsClient(this)
         settingsClient!!.checkLocationSettings(locationSettingsRequest)
-
         // call register location listener
         registerLocationListner()
 
+
+       map!!.setOnMapClickListener { latLng ->
+
+
+           var markerOptions = MarkerOptions()
+           markerOptions.position(latLng)
+
+           var lat = latLng.latitude
+           var long = latLng.longitude
+           var address: List<Address>
+           var geocoder = Geocoder(this, Locale.getDefault())
+
+           try {
+               address = geocoder.getFromLocation(lat, long, 1)
+               val mapData = MapData()
+               if (address[0].locality != null) {
+                   mapData.place_name = address[0].locality
+               }
+               mapData.place_address = address[0].getAddressLine(0)
+               if (address[0].phone != null) {
+                   mapData.place_number = address[0].phone
+               }
+               mapData.place_code = address[0].countryCode
+
+
+               if (marker!=null)
+               {
+                   marker!!.remove()
+               }
+               marker = map!!.addMarker(markerOptions)
+               map!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+               var customWindowAdapter = CustomWindowAdapter(this, mapData)
+               map!!.setInfoWindowAdapter(customWindowAdapter)
+               marker!!.showInfoWindow()
+
+
+           } catch (e: IOException) {
+               Log.d("RealTimeMap", "Exception: $e")
+           }
+
+       }
     }
 
     private fun registerLocationListner()
@@ -107,7 +148,7 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
         // initialize location callback object
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
-                onLocationChanged(locationResult!!.getLastLocation())
+                onLocationChanged(locationResult!!.lastLocation)
             }
         }
         // 4. add permission if android version is greater then 23
@@ -117,10 +158,10 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
     }
 
     private fun checkPermission() : Boolean {
-        if (ContextCompat.checkSelfPermission(this , android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this , Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient()
             map!!.isMyLocationEnabled = true
-            return true;
+            return true
         } else {
             requestPermissions()
             return false
@@ -134,7 +175,7 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
-            if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION) {
+            if (permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION) {
                 registerLocationListner()
             }
         }
@@ -144,13 +185,13 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
         override fun onLocationChanged(p0: Location?)
         {
 
-            Log.d("RealtimeMap","Location Changed")
+            Log.d("RealTimeMap","Location Changed")
             buildGoogleApiClient()
             map!!.isMyLocationEnabled = true
 
             // create message for toast with updated latitude and longitudefa
             var msg = "Updated Location: " + p0!!.latitude  + " , " +p0!!.longitude
-            Log.d("RealtimeMap","Msg $msg")
+            Log.d("RealTimeMap","Msg $msg")
             // show toast message with updated location
             //Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
             val location = LatLng(p0!!.latitude, p0.longitude)
@@ -170,9 +211,12 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
             Log.d("RealTimeMap", "$place" )
 
 
-            map!!.clear()
+         //   map!!.clear()
+
+
+
             map!!.addMarker(MarkerOptions().position(location).title(place))
-            map!!.moveCamera(CameraUpdateFactory.newLatLng(location))
+        //     map!!.moveCamera(CameraUpdateFactory.newLatLng(location))
 
         
         }
@@ -202,14 +246,8 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
 
 
         Log.d("DetailsActivity", "onConnected $p0")
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
             return
         }
 
@@ -227,3 +265,5 @@ class RealTimeMap : AppCompatActivity(), OnMapReadyCallback, LocationListener,Go
         
     }
 }
+
+
